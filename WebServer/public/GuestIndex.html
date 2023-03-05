@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabloid.</title>
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <section class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 mr-auto">
+                    <h1 class="header__title text-center text-dark">
+                        <a href="/home" class="text-dark">
+                            Tabloid.
+                        </a>
+                    </h1>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 ml-auto">
+                    <div class="row align-items-center justify-content-around">
+                        <h6><a class="link-account m-1 text-dark" href="/auth">Login/SignUp</a></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content p-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12" v-if="articles.length > 0">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-6 col-xs-12 d-flex align-items-stretch" v-for="article in articles">
+                            <div class="card mb-4">
+                                <img alt="" src="assets/images/default.jpg" v-if="article.urlToImage === null">
+                                <img :src="article.urlToImage" alt="" class="card-img-top" v-else>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{article.title}}</h5>
+                                    <p class="card-text">{{article.description}}</p>
+                                    <p class="card-text"><small
+                                            class="text-muted">{{new Date(Date.parse(article.publishedAt))}}</small></p>
+                                    <a :href="article.url" target="_blank" class="btn btn-primary">Подробнее</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-else class="col-lg-12 col-sm-12 col-xs-12 text-center mt-5">
+                    <p class="text-dark h6 ">К сожалению статьи по данной выборке пока отстутствуют, попробуйте изменить параметры фильтра или повторить попытку позже</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+<script>
+    const {createApp} = Vue
+    createApp({
+        data() {
+            return {
+                apiData: {
+                    Country: "Default",
+                    Category: "Default",
+                    PageSize: 30
+                },
+                articles: []
+            }
+        },
+        mounted() {
+            this.fetchData()
+        },
+        methods: {
+            async fetchData() {
+                const response = await axios.post('/api', JSON.stringify(this.apiData))
+                this.articles = response.data.articles
+            }
+        }
+    }).mount('#app')
+</script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
+<script>self.feather.replace()</script>
+</body>
+</html>

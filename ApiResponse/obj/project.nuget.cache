@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ltv4P3jW4tImTFskJx0SDiZGYiZGYD5GjG4KxB+PQ2kH09i6OR+QR2mf4fjC8VfRwU0/T3EqO3iS2rmO+QnADQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\apdas\\HW_C#_3\\hw-butyanov-artem\\Homeworks\\Task-6\\ApiResponse\\ApiResponse.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\apdas\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

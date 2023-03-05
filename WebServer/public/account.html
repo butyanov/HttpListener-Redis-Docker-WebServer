@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabloid.</title>
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <section class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 mr-auto">
+                    <h1 class="header__title text-center text-dark">
+                        <a href="/home" class="text-dark">
+                            Tabloid.
+                        </a>
+                    </h1>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 ml-auto">
+                    <div class="row align-items-center justify-content-around">
+                        <h6><a class="link-account m-1 text-dark" href="#">Account</a></h6>
+                        <h6><a class="link-account m-1 text-dark" @click="Logout" href="#">Logout</a></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="content">
+        <div class="container">
+            <div class="row justify-content-center" style="margin-top: 20vh;">
+                <div class="col-8 text-center">
+                    <div class="card mb-5">
+                        <h5 class="mb-3 mt-3 text-center">Update your data</h5>
+                        <form action="" v-on:submit.prevent="onSubmit">
+                            <input class="form-control form-control-lg mb-2" type="email" placeholder="Email" v-model="userData.Email">
+                            <input class="form-control form-control-lg mb-2" type="text" placeholder="Nick" v-model="userData.Nickname">
+                            <input class="form-control form-control-lg mb-2" type="password" v-model="userData.Password" placeholder="password">
+                            <p class="sign-in__error" style="padding: 5px; font-size:10px; color: red">{{ updateError }}</p>
+                            <button type="submit" class="btn btn-primary mb-2 btn-lg" @click="updateUserData">Update data</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    const {createApp} = Vue
+    createApp({
+        data() {
+            return {
+                updateError: "",
+                userData: {
+                    Id: "",
+                    Email: "",
+                    Nickname: "",
+                    Password: ""
+                }
+            }
+        },
+        mounted() {
+            this.getUserData()
+        },
+        methods: {
+            async getUserData() {
+                const response = await axios.get('/users')
+                this.userData.Id = response.data["Model"]["Id"]
+                this.userData.Email = response.data["Model"]["Email"]
+                this.userData.Nickname = response.data["Model"]["NickName"]
+                this.userData.Password = response.data["Model"]["Password"]
+            },
+            async Logout() {
+                await axios.post('/logout').then(()=>{
+                    window.location.replace("http://localhost:8080/home");
+                })
+            },
+            async updateUserData() {
+                await axios.patch('/users', JSON.stringify(this.userData)).then((response)=>{
+                    window.location.replace("http://localhost:8080/home");
+                }).catch((error)=>{
+                    this.updateError = error.response.data["Message"]
+                })
+            }
+        }
+    }).mount('#app')
+</script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
+<script>self.feather.replace()</script>
+</body>
+</html>

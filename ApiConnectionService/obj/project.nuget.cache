@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "lwQOKCGGHtBIu41rL9256HOaNrA72q9BxTrmVZPGMGBEWzQf08FGwKpNbYwJTLrvAGANo0YORdqu/3UNyiE22Q==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\apdas\\WebServer\\ApiConnectionService\\ApiConnectionService.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\apdas\\.nuget\\packages\\newtonsoft.json\\13.0.2\\newtonsoft.json.13.0.2.nupkg.sha512",
+    "C:\\Users\\apdas\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.13\\microsoft.netcore.app.ref.6.0.13.nupkg.sha512",
+    "C:\\Users\\apdas\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.13\\microsoft.windowsdesktop.app.ref.6.0.13.nupkg.sha512",
+    "C:\\Users\\apdas\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.13\\microsoft.aspnetcore.app.ref.6.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}

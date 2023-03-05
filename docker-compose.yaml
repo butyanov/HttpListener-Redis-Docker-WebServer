@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  cache:
+    image: redis:7.0.5-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass 5eb105669659490713a9bcd1482ba43283ad9303b2a09af166bd09ace4bda7e6
+    volumes:
+      - cache:/data
+  postgres:
+    image: postgres
+    volumes:
+      - database:/var/lib/postgresql/data
+      - ./docker/postgres/dumps/:/tmp/
+    ports:
+      - "5432:5432"
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_DB: "sql"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    restart: always
+volumes:
+  cache:
+    driver: local
+  database:
+    driver: local

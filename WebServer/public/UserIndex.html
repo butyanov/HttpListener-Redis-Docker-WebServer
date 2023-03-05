@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tabloid.</title>
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <section class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 mr-auto">
+                    <h1 class="header__title text-center text-dark">
+                        <a href="/home" class="text-dark">
+                            Tabloid.
+                        </a>
+                    </h1>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12 col-xs-12 ml-auto">
+                    <div class="row align-items-center justify-content-around">
+                        <h6><a class="link-account m-1 text-dark" href="/account">Account</a></h6>
+                        <h6><a class="link-account m-1 text-dark" @click="Logout" href="#">Logout</a></h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+<section class="content p-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-right mb-3">
+                <h3>
+                    <em>Привет, {{ userData["NickName"] }}!</em>
+                </h3>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 mb-4">
+                <nav id="sidebar">
+                    <div class="p-4 pt-5">
+                        <ul class="list-unstyled components mb-5">
+                            <li v-for="(values, key) in filterProps">
+                                <a aria-expanded="false" class="dropdown-toggle" data-toggle="collapse"
+                                   :href="`#pageSubmenu-${key}`">{{ key }}</a>
+                                <ul class="collapse list-unstyled" :id="`pageSubmenu-${key}`" >
+                                    <li v-for="value in values"><a href="#" @click="applyFilter(key, value)"><span class="fa fa-chevron-right mr-2"></span>
+                                        {{ value }}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p class="h6 font-weight-normal text-dark text-center">Amount</p>
+                        <input v-model="apiData.PageSize" class="input w-100" placeholder="Amount" type="number"/>
+                        <button @click="fetchApiData" class="btn btn-sm btn-outline-primary w-100 mt-2">Apply</button>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-lg-9" v-if="articles.length > 0">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-6 col-xs-12 d-flex align-items-stretch" v-for="article in articles">
+                        <div class="card mb-4">
+                            <img alt="" src="assets/images/default.jpg" v-if="article.urlToImage === null">
+                            <img :src="article.urlToImage" alt="" class="card-img-top" v-else>
+                            <div class="card-body">
+                                <h5 class="card-title">{{article.title}}</h5>
+                                <p class="card-text">{{article.description}}</p>
+                                <p class="card-text"><small
+                                        class="text-muted">{{new Date(Date.parse(article.publishedAt))}}</small></p>
+                                <a :href="article.url" class="btn btn-primary" target="_blank">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-else class="col-lg-12 col-sm-12 col-xs-12 text-center mt-5">
+                <p class="text-dark h6 ">К сожалению статьи по данной выборке пока отстутствуют, попробуйте изменить параметры фильтра или повторить попытку позже</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+</div>
+<script>
+    const {createApp} = Vue
+    createApp({
+        data() {
+            return {
+                filterProps: {},
+                apiData: {
+                    Country: "Default",
+                    Category: "Default",
+                    PageSize: 10
+                },
+                userData: {},
+                articles: [],
+            }
+        },
+        mounted() {
+            this.fetchFilterProps()
+            this.fetchUserData()
+            this.fetchApiData()
+        },
+        methods: {
+            async fetchFilterProps() {
+                const response = await axios.get('/filterProps');
+                this.filterProps = response.data
+            },
+            async fetchApiData() {
+                const response = await axios.post('/api', JSON.stringify(this.apiData))
+                this.articles = response.data.articles
+            },
+            async applyFilter(key, value){
+                this.apiData[key] = value;
+                await this.fetchApiData()
+            },
+            async fetchUserData() {
+                const response = await axios.get('/users')
+                this.userData = response.data["Model"]
+            },
+            async Logout() {
+                await axios.post('/logout').then(()=>{
+                    window.location.replace("http://localhost:8080/home");
+                })
+            }
+        }
+    }).mount('#app')
+</script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/feather-icons"></script>
+<script>self.feather.replace()</script>
+</body>
+</html>
