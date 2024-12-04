@@ -6109,17 +6109,18 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\apdas\\.nuget\\packages\\": {}
+    "C:\\Users\\apdas\\RiderProjects\\GeometryLibrary\\GeometryLibrary\\bin\\Debug": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\apdas\\WebServer\\WebServer.Tests\\WebServer.Tests.csproj",
+      "projectUniqueName": "C:\\Users\\apdas\\Downloads\\HttpListener-Redis-Docker-WebServer\\WebServer.Tests\\WebServer.Tests.csproj",
       "projectName": "WebServer.Tests",
-      "projectPath": "C:\\Users\\apdas\\WebServer\\WebServer.Tests\\WebServer.Tests.csproj",
-      "packagesPath": "C:\\Users\\apdas\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\apdas\\WebServer\\WebServer.Tests\\obj\\",
+      "projectPath": "C:\\Users\\apdas\\Downloads\\HttpListener-Redis-Docker-WebServer\\WebServer.Tests\\WebServer.Tests.csproj",
+      "packagesPath": "C:\\Users\\apdas\\RiderProjects\\GeometryLibrary\\GeometryLibrary\\bin\\Debug",
+      "outputPath": "C:\\Users\\apdas\\Downloads\\HttpListener-Redis-Docker-WebServer\\WebServer.Tests\\obj\\",
       "projectStyle": "PackageReference",
+      "UsingMicrosoftNETSdk": false,
       "configFilePaths": [
         "C:\\Users\\apdas\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
@@ -6127,7 +6128,9 @@
         "net6.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Users\\apdas\\RiderProjects\\GeometryLibrary\\GeometryLibrary": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.pkg.github.com/rw-delivery/index.json": {}
       },
       "frameworks": {
         "net6.0": {
@@ -6139,6 +6142,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -6180,15 +6188,15 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.13, 6.0.13]"
+            "version": "[6.0.29, 6.0.29]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.13, 6.0.13]"
+            "version": "[6.0.29, 6.0.29]"
           },
           {
             "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.13, 6.0.13]"
+            "version": "[6.0.29, 6.0.29]"
           }
         ],
         "frameworkReferences": {
@@ -6196,7 +6204,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100-preview.4.24267.66\\RuntimeIdentifierGraph.json"
       }
     }
   }

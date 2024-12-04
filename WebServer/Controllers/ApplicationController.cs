@@ -23,7 +23,7 @@ public class ApplicationController : IController
         var basePath = Path.Combine(Directory.GetCurrentDirectory(), "public");
         if (path != null)
             for (var i = 0; i < path.Length - 1; i++)
-                basePath = Path.Combine(basePath, $@"{path[i]}\");
+                basePath = Path.Combine(basePath, $@"{path[i]}/");
 
         basePath = Path.Combine(basePath, path?[^1] ?? throw new FileNotFoundException());
         if (File.Exists(basePath))
@@ -42,30 +42,30 @@ public class ApplicationController : IController
     public async Task ShowIndex(HttpListenerContext context)
     {
        if(await AuthService.ServiceInstance.IsAuthorized(context))
-           await ShowFile(@"public\UserIndex.html", context);
+           await ShowFile(@"public/UserIndex.html", context);
        else
-           await ShowFile(@"public\GuestIndex.html", context);
+           await ShowFile(@"public/GuestIndex.html", context);
     }
     
     [RouteProps("article", "GET", RoutePropsAttribute.UserRole.Anonymous)]
     public async Task ShowArticle(HttpListenerContext context)
     {
-        await ShowFile(@"public\article.html", context);
+        await ShowFile(@"public/article.html", context);
     }
     
     [RouteProps("auth", "GET")]
     public async Task ShowAuthPage(HttpListenerContext context)
     {
-        await ShowFile(@"public\auth.html", context);
+        await ShowFile(@"public/auth.html", context);
     }
     
     [RouteProps("account", "GET", RoutePropsAttribute.UserRole.Authorized)]
     public async Task ShowAccountPage(HttpListenerContext context)
     {
-        await ShowFile(@"public\account.html", context);
+        await ShowFile(@"public/account.html", context);
     }
     
-    [RouteProps("api", "POST")]
+    [RouteProps("api", "POST", RoutePropsAttribute.UserRole.Anonymous)]
     public static async Task ShowApi(HttpListenerContext context)
     {
         var file = await ApiRequestClient.GetApiDataAsync(context);

@@ -1,8 +1,11 @@
 ﻿namespace WebServer.Enums;
 
-public enum Country
+public enum Language
 {
     Ru,
-    Us,
+    En,
+    Fr,
+    De,
+    Es,
     Default
 }

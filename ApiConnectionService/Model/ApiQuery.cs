@@ -7,7 +7,7 @@ namespace ApiConnectionService.Model;
 public class ApiQuery
 {
     [JsonConverter(typeof(StringEnumConverter))]
-    public Country Country { get; set; }
+    public Language Language { get; set; }
     
     [JsonConverter(typeof(StringEnumConverter))]
     public Category Category { get; set; }

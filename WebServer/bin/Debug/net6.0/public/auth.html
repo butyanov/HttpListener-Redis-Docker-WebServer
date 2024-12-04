@@ -2,92 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tabloid.</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabloid</title>
     <link href="assets/css/auth.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
-    <script src="assets/js/auth.js"></script>
 </head>
 <body>
-    <div id="app" class="container left-panel-active">
-        <!-- Sign Up -->
-        <div class="container__form container--signup">
-            <form v-on:submit.prevent="onSubmit" action="/users" method="post" class="form" id="form1">
-                <h2 class="form__title">Sign Up</h2>
-                <input v-model="signUpData.email" class="input" placeholder="Email" type="email"/>
-                <input v-model="signUpData.nickname" class="input" placeholder="NickName" type="text"/>
-                <input v-model="signUpData.password" class="input" placeholder="Password" type="password"/>
-                <p class="sign-up__error" style="padding: 0; font-size:10px; color: red">{{ signUpError }}</p>
-                <p class="sign-up__success" style="padding: 0; font-size:10px; color: green">{{ signUpSuccess }}</p>
-                <button @click="signUp" class="btn">Sign Up</button>
-            </form>
-        </div>
+<div id="app" class="container left-panel-active">
+    <!-- Sign Up -->
+    <div class="container__form container--signup">
+        <form @submit.prevent="signUp" class="form">
+            <h2 class="form__title">Sign Up</h2>
+            <input v-model="signUpData.email" class="input" placeholder="Email" type="email" required />
+            <input v-model="signUpData.nickname" class="input" placeholder="Nickname" type="text" required />
+            <input v-model="signUpData.password" class="input" placeholder="Password" type="password" required />
+            <p v-if="signUpError" class="sign-up__error" style="color: red;">{{ signUpError }}</p>
+            <p v-if="signUpSuccess" class="sign-up__success" style="color: green;">{{ signUpSuccess }}</p>
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+    </div>
 
-        <!-- Sign In -->
-        <div class="container__form container--signin">
-            <form v-on:submit.prevent="onSubmit" action="/login" method="post" class="form" id="form2">
-                <h2 class="form__title">Sign In</h2>
-                <input v-model="signInData.email" class="input" placeholder="Email" type="email"/>
-                <input v-model="signInData.password" class="input" placeholder="Password" type="password"/>
-                <p class="sign-in__error" style="padding: 0; font-size:10px; color: red">{{ signInError }}</p>
-                <p class="sign-in__success" style="padding: 0; font-size:10px; color: green">{{ signInSuccess }}</p>
-                <button @click="signIn" class="btn">Sign In</button>
-            </form>
-        </div>
+    <!-- Sign In -->
+    <div class="container__form container--signin">
+        <form @submit.prevent="signIn" class="form">
+            <h2 class="form__title">Sign In</h2>
+            <input v-model="signInData.email" class="input" placeholder="Email" type="email" required />
+            <input v-model="signInData.password" class="input" placeholder="Password" type="password" required />
+            <p v-if="signInError" class="sign-in__error" style="color: red;">{{ signInError }}</p>
+            <button type="submit" class="btn">Sign In</button>
+        </form>
+    </div>
 
-        <!-- Overlay -->
-        <div class="container__overlay">
-            <div class="overlay">
-                <div class="overlay__panel overlay--left">
-                    <button class="btn" id="signIn">Sign Up</button>
-                </div>
-                <div class="overlay__panel overlay--right">
-                    <button class="btn" id="signUp">Sign In</button>
-                </div>
+    <!-- Overlay -->
+    <div class="container__overlay">
+        <div class="overlay">
+            <div class="overlay__panel overlay--left">
+                <button @click="switchToSignUp" class="btn">Go to Sign Up</button>
+            </div>
+            <div class="overlay__panel overlay--right">
+                <button @click="switchToSignIn" class="btn">Go to Sign In</button>
             </div>
         </div>
     </div>
+</div>
+
 <script>
-    const {createApp} = Vue
+    const { createApp } = Vue;
+
     createApp({
         data() {
             return {
-                signUpSuccess: "",
-                signUpError: "",
-                signInError: "",
-                signUpResponse: null,
-                signInResponse: null,
                 signUpData: {
                     email: "",
-                    mobile: "",
-                    description: "",
+                    nickname: "",
                     password: ""
                 },
                 signInData: {
                     email: "",
                     password: ""
-                }
-            }
+                },
+                signUpSuccess: "",
+                signUpError: "",
+                signInError: ""
+            };
         },
         methods: {
             async signUp() {
-                await axios.post('/users', JSON.stringify(this.signUpData)).then((response)=>{
-                    this.signUpError = ""
-                    this.signUpSuccess = response.data["Message"]
-                }).catch((error)=>{
-                    this.signUpSuccess = ""
-                   this.signUpError = error.response.data["Message"]
-                })
+                try {
+                    const response = await axios.post('/users', this.signUpData);
+                    this.signUpSuccess = response.data.Message || "Sign-up successful!";
+                    this.signUpError = "";
+                } catch (error) {
+                    this.signUpError = error.response?.data?.Message || "Sign-up failed.";
+                    this.signUpSuccess = "";
+                }
             },
             async signIn() {
-                await axios.post('/login', JSON.stringify(this.signInData)).then(()=>{
-                    window.location.replace("http://localhost:8080/home");
-                }).catch((error)=>{
-                    this.signInError = error.response.data["Message"]
-                })
+                try {
+                    await axios.post('/login', this.signInData);
+                    window.location.replace("/home");
+                } catch (error) {
+                    this.signInError = error.response?.data?.Message || "Sign-in failed.";
+                }
+            },
+            switchToSignUp() {
+                document.querySelector(".container").classList.remove("left-panel-active");
+            },
+            switchToSignIn() {
+                document.querySelector(".container").classList.add("left-panel-active");
             }
         }
-    }).mount('#app')
+    }).mount('#app');
 </script>
 </body>
 </html>
